@@ -44,8 +44,8 @@ Commands above passed. Docker image builds for both `backend` and `frontend` als
 | Transactions history coverage card | `[WORKING]` | Shows total imported count plus oldest/newest imported transaction dates. |
 | Transaction inline edits (category/notes/exclude) | `[WORKING]` | Category assign/update/clear works (`categoryId: null` clears back to uncategorized). |
 | Categories CRUD (custom categories) | `[WORKING]` | Create/update/delete custom categories works; system categories are protected. |
-| Budgets page (monthly targets, variance, warnings) | `[WORKING]` | Works with localStorage-backed targets. |
-| Server-backed budgets | `[MISSING]` | No `/budgets` backend endpoints yet; frontend uses local adapter only. |
+| Budgets page (monthly targets, variance, warnings) | `[WORKING]` | Uses persisted backend budgets (`GET/PUT/DELETE /api/v1/budgets...`) so targets sync across browsers/devices. |
+| Server-backed budgets | `[WORKING]` | Implemented end-to-end with DB-backed monthly targets by category. |
 | Recurring bills management UI | `[MISSING]` | Backend endpoints exist, but no frontend page/route. |
 | Transfer pairing/unlinking UI | `[MISSING]` | Backend endpoints exist, but no frontend controls. |
 
@@ -64,7 +64,7 @@ Commands above passed. Docker image builds for both `backend` and `frontend` als
 | SimpleFIN connection setup/sync | `[PARTIAL]` | Implemented and verified with real data, including historical backfill windows; total history depth still depends on what each institution/provider returns to SimpleFIN. |
 | Scheduled sync + recurring jobs | `[PARTIAL]` | Scheduler is enabled and runs, but production behavior depends on real connections/data. |
 | Auto-categorization rules engine | `[PARTIAL]` | Matching engine exists in backend service, but there is no public API/UI to manage rules yet. |
-| Budget persistence API | `[MISSING]` | No backend budget endpoints implemented yet. |
+| Budget persistence API | `[WORKING]` | `GET /budgets?month=YYYY-MM`, `PUT /budgets/{month}`, `DELETE /budgets/{month}/categories/{categoryId}` backed by DB table `budget_targets`. |
 
 ## Current issues
 1. Historical depth beyond the imported coverage window can still be limited by upstream provider data availability through SimpleFIN.
@@ -73,10 +73,9 @@ Commands above passed. Docker image builds for both `backend` and `frontend` als
 
 1. No user-facing recurring bills feature, despite backend support.
 2. No user-facing transfer pairing/unpairing feature, despite backend support.
-3. No server-side budget storage; budget targets are local to browser storage.
-4. No user-facing categorization-rule management (rules can only be managed internally/direct DB today).
-5. Backend automated tests are still sparse in many areas (improved for transaction category clear behavior in this pass, but broader service/controller coverage is still needed).
-6. There is no user-facing "backfill diagnostics" UI to explain why historical imports stop at a specific date.
+3. No user-facing categorization-rule management (rules can only be managed internally/direct DB today).
+4. Backend automated tests are still sparse in many areas (improved for transaction category clear behavior in this pass, but broader service/controller coverage is still needed).
+5. There is no user-facing "backfill diagnostics" UI to explain why historical imports stop at a specific date.
 
 ## Verified SimpleFIN History Findings (Feb 7, 2026)
 
@@ -109,9 +108,9 @@ Commands above passed. Docker image builds for both `backend` and `frontend` als
 
 ### Phase 3: Budget V2 (server-backed)
 
-1. Implement `/api/v1/budgets` contract documented in `frontend/docs/backend-budget-contract.md`.
-2. Migrate frontend from local adapter to API adapter with offline fallback.
-3. Add migration path for existing localStorage targets.
+1. Completed Feb 7, 2026: implement `/api/v1/budgets` persistence API + DB-backed monthly targets.
+2. Completed Feb 7, 2026: migrate frontend budgets/dashboard to API-backed targets instead of local storage.
+3. Optional follow-up: add one-time migration/import path for any legacy localStorage budget targets.
 
 ### Phase 4: SimpleFIN hardening
 

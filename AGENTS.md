@@ -72,12 +72,10 @@ Use this file first if you start in `/Users/petergelgor/Documents/projects/budge
 - `/categories`
   - Uses `/categories` GET/POST/PUT/DELETE and `/categorization-rules` GET/POST/PUT/DELETE and `/categorization-rules/{id}/transactions` (GET) and `/categorization-rules/backfill` (POST, maintenance).
 - `/budgets`
-  - Uses `/categories?flat=true`, `/analytics/spending`, `/transactions`.
-  - Budget targets themselves are localStorage-only in frontend (no backend `/budgets` API currently).
+  - Uses `/budgets` GET/PUT/DELETE, `/categories?flat=true`, `/analytics/spending`, `/transactions`.
 
 ## Current Product Contract Boundaries
-- Backend is source of truth for users, connections, accounts, categories, transactions, transfers, analytics, recurring patterns.
-- Frontend is source of truth for budget targets (local only, key prefix `budget.targets.v1`).
+- Backend is source of truth for users, connections, accounts, categories, transactions, transfers, analytics, recurring patterns, and budget targets.
 - Frontend currently has no route/UI for recurring management or transfer management, even though backend endpoints exist.
 
 ## Non-Negotiable Invariants
@@ -131,7 +129,5 @@ Use this file first if you start in `/Users/petergelgor/Documents/projects/budge
 - If you add a note in either repo, update that repo’s `notes_to_agent/index.md` in the same change.
 
 ## Known Functional Gaps (Important)
-- No backend `/budgets` endpoints yet.
-- Frontend budgets are local storage only.
 - No frontend recurring management page yet.
 - No frontend transfer pair management page yet.
