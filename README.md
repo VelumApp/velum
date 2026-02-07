@@ -46,8 +46,9 @@ Commands above passed. Docker image builds for both `backend` and `frontend` als
 | Categories CRUD (custom categories) | `[WORKING]` | Create/update/delete custom categories works; system categories are protected. |
 | Budgets page (monthly targets, variance, warnings) | `[WORKING]` | Uses persisted backend budgets (`GET/PUT/DELETE /api/v1/budgets...`) so targets sync across browsers/devices. |
 | Server-backed budgets | `[WORKING]` | Implemented end-to-end with DB-backed monthly targets by category. |
-| Recurring bills management UI | `[MISSING]` | Backend endpoints exist, but no frontend page/route. |
-| Transfer pairing/unlinking UI | `[MISSING]` | Backend endpoints exist, but no frontend controls. |
+| Recurring bills management (list/detect/upcoming/toggle/delete) | `[WORKING]` | Full recurring page with pattern list, detect now, upcoming bills, toggle active, and delete. |
+| Transfer pairing/unlinking UI | `[WORKING]` | Transfer pairs card on Transactions page with unlink; mark-transfer inline on transaction rows. |
+| Account detail view | `[WORKING]` | `/accounts/:id` shows account info + filtered transactions; linked from Dashboard net worth breakdown. |
 
 ### Backend API (what exists today)
 
@@ -58,7 +59,7 @@ Commands above passed. Docker image builds for both `backend` and `frontend` als
 | Accounts: list, summary, get by id | `[WORKING]` | Verified list/summary; not represented by dedicated UI pages beyond summary usage. |
 | Transactions: list/get/update | `[WORKING]` | Verified list/get/update paths and validation behavior, including category clear via `categoryId: null`. |
 | Transactions coverage: `/transactions/coverage` | `[WORKING]` | Returns imported transaction count and min/max posted dates for current user. |
-| Transfer APIs: list/mark/unlink | `[PARTIAL]` | Endpoints exist; full pair/unpair flow not fully exercised here due no seeded transfer data. |
+| Transfer APIs: list/mark/unlink | `[WORKING]` | Frontend transfer management UI now surfaces pair listing, mark-transfer, and unlink flows. |
 | Analytics: spending/trends/cashflow | `[WORKING]` | Verified with empty dataset responses and valid shapes. |
 | Recurring: list/detect/upcoming/calendar/toggle/delete | `[WORKING]` | Endpoints available and responding; frontend does not expose them yet. |
 | SimpleFIN connection setup/sync | `[PARTIAL]` | Implemented and verified with real data, including historical backfill windows; total history depth still depends on what each institution/provider returns to SimpleFIN. |
@@ -71,10 +72,8 @@ Commands above passed. Docker image builds for both `backend` and `frontend` als
 
 ## Known Gaps / Non-Working User Flows
 
-1. No user-facing recurring bills feature, despite backend support.
-2. No user-facing transfer pairing/unpairing feature, despite backend support.
-3. No user-facing categorization-rule management (rules can only be managed internally/direct DB today).
-4. There is no user-facing "backfill diagnostics" UI to explain why historical imports stop at a specific date.
+1. No standalone categorization-rule management page (rules are managed inline from Transactions and Categories pages).
+2. There is no user-facing "backfill diagnostics" UI to explain why historical imports stop at a specific date.
 
 ## Verified SimpleFIN History Findings (Feb 7, 2026)
 
@@ -99,11 +98,11 @@ Commands above passed. Docker image builds for both `backend` and `frontend` als
 2. Completed Feb 7, 2026: standardized auth/security error payloads — unauthenticated requests now return `{ status: 401, message, timestamp }` JSON instead of default Spring error pages; access-denied returns `{ status: 403, message, timestamp }`.
 3. Completed Feb 7, 2026: added comprehensive backend tests (117 tests across 16 test classes) covering Auth, Categories, Transactions, Analytics, Budgets, Accounts, Transfers, Recurring, CategoryView, GlobalExceptionHandler, SecurityErrorHandler, and JwtService.
 
-### Phase 2: Ship hidden backend value in UI
+### Phase 2: Ship hidden backend value in UI — COMPLETED
 
-1. Add recurring page (list, detect now, upcoming, toggle active, delete).
-2. Add transfer management in transactions UI (view transfer pairs, mark/unlink).
-3. Add account detail view using existing `/accounts/{id}` API.
+1. Completed Feb 7, 2026: recurring page with pattern list, detect now, upcoming bills, toggle active, and delete.
+2. Completed Feb 7, 2026: transfer management on Transactions page (view transfer pairs, mark/unlink).
+3. Completed Feb 7, 2026: account detail view at `/accounts/:id` with account info and filtered transactions, linked from Dashboard.
 
 ### Phase 3: Budget V2 (server-backed)
 

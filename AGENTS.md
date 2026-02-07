@@ -73,10 +73,14 @@ Use this file first if you start in `/Users/petergelgor/Documents/projects/budge
   - Uses `/categories` GET/POST/PUT/DELETE and `/categorization-rules` GET/POST/PUT/DELETE and `/categorization-rules/{id}/transactions` (GET) and `/categorization-rules/backfill` (POST, maintenance).
 - `/budgets`
   - Uses `/budgets` GET/PUT/DELETE, `/categories?flat=true`, `/analytics/spending`, `/transactions`.
+- `/recurring`
+  - Uses `/recurring` GET, `/recurring/detect` POST, `/recurring/upcoming` GET, `/recurring/{id}` PATCH/DELETE.
+- `/accounts/:id`
+  - Uses `/accounts/{id}` GET, `/transactions` GET (filtered by accountId).
 
 ## Current Product Contract Boundaries
 - Backend is source of truth for users, connections, accounts, categories, transactions, transfers, analytics, recurring patterns, and budget targets.
-- Frontend currently has no route/UI for recurring management or transfer management, even though backend endpoints exist.
+- All backend endpoint areas are now surfaced in frontend UI.
 
 ## Non-Negotiable Invariants
 - Frontend is TS-only in canonical source/test paths.
@@ -129,5 +133,4 @@ Use this file first if you start in `/Users/petergelgor/Documents/projects/budge
 - If you add a note in either repo, update that repo’s `notes_to_agent/index.md` in the same change.
 
 ## Known Functional Gaps (Important)
-- No frontend recurring management page yet.
-- No frontend transfer pair management page yet.
+- No standalone categorization-rule management page (rules managed inline from Transactions and Categories pages).
