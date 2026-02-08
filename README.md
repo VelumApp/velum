@@ -134,7 +134,14 @@ cp .env.example .env
 
 2. Optionally update `JWT_SECRET` and `ENCRYPTION_SECRET` in `.env`.
 
-3. Start everything:
+3. If you access the app remotely (DDNS/Tailscale), set `APP_CORS_ALLOWED_ORIGINS` in the same root `.env`.
+   Example:
+
+```env
+APP_CORS_ALLOWED_ORIGINS=http://localhost:3000,http://peterubuntuserver.ddns.net:3000,http://100.104.225.32:3000
+```
+
+4. Start everything:
 
 ```bash
 docker compose up --build -d
