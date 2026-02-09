@@ -68,7 +68,7 @@ Use this file first if you start in `/Users/petergelgor/Documents/projects/budge
 - `/connections`
   - Uses `/connections`, `/connections/simplefin/setup`, `/connections/{id}/sync`, `/connections/{id}` (DELETE), `/accounts/summary`.
 - `/transactions`
-  - Uses `/transactions`, `/transactions/coverage`, `/transactions/{id}` (PATCH), `/accounts`, `/categories?flat=true`, `/categorization-rules` (POST).
+  - Uses `/transactions` (GET/POST), `/transactions/coverage`, `/transactions/{id}` (PATCH/DELETE), `/accounts`, `/categories?flat=true`, `/categorization-rules` (POST).
 - `/categories`
   - Uses `/categories` GET/POST/PUT/DELETE and `/categorization-rules` GET/POST/PUT/DELETE and `/categorization-rules/{id}/transactions` (GET) and `/categorization-rules/backfill` (POST, maintenance).
 - `/budgets`
