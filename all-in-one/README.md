@@ -1,68 +1,57 @@
-# Budgeting App — All-in-One Docker Image
+# Velum — All-in-One Docker Image
 
-Everything you need in a single `docker run` command. No Docker Compose required!
+This image packages **PostgreSQL + backend + frontend** into a single container. Your friends do **not** need the source code.
 
-## Quick Start
+## Quick Start (no build)
 
-### 0. Pull it (if you published it to a registry)
-
-If you (or a friend) pushed this image to Docker Hub / GHCR, you can run it directly:
+### Option 1: `docker run` (one-liner)
 
 ```bash
 docker run -d \
   -p 3000:80 \
-  -v budget-data:/var/lib/postgresql/data \
-  -v budget-secrets:/var/lib/budget-secrets \
-  --name budget \
-  <your-registry-namespace>/budgeting-app:latest
+  -v velum-data:/var/lib/postgresql/data \
+  -v velum-secrets:/var/lib/budget-secrets \
+  --name velum \
+  petergelgor/velum:latest
 ```
 
-### 1. Build the image (one-time)
+Open **http://localhost:3000**.
 
-From the project root directory:
+### Option 2: `docker compose` (also no build)
 
-```bash
-docker build -t budgeting-app -f all-in-one/Dockerfile .
+Create a `docker-compose.yml` like this:
+
+```yaml
+services:
+  velum:
+    image: petergelgor/velum:latest
+    container_name: velum
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    volumes:
+      - velum_data:/var/lib/postgresql/data
+      - velum_secrets:/var/lib/budget-secrets
+
+volumes:
+  velum_data:
+  velum_secrets:
 ```
 
-### 2. Run it
+Then run:
 
 ```bash
-docker run -d \
-  -p 3000:80 \
-  -v budget-data:/var/lib/postgresql/data \
-  -v budget-secrets:/var/lib/budget-secrets \
-  --name budget \
-  budgeting-app
+docker compose up -d
 ```
 
-Then open **http://localhost:3000** in your browser.
-
-### 3. Stop / restart
+### Stop / restart / remove
 
 ```bash
-docker stop budget
-docker start budget      # data is preserved in volumes
-```
+docker stop velum
+docker start velum
 
-### 4. Remove everything
-
-```bash
-docker rm -f budget
-docker volume rm budget-data budget-secrets   # deletes all data
-```
-
-## If you received a pre-built image file
-
-If someone sent you a `.tar` file instead of the source code:
-
-```bash
-docker load -i budgeting-app.tar
-docker run -d -p 3000:80 \
-  -v budget-data:/var/lib/postgresql/data \
-  -v budget-secrets:/var/lib/budget-secrets \
-  --name budget \
-  budgeting-app
+docker rm -f velum
+docker volume rm velum_data velum_secrets   # deletes all data
 ```
 
 ## Configuration (optional)
@@ -81,40 +70,16 @@ Example with custom settings:
 ```bash
 docker run -d -p 3000:80 \
   -e JWT_SECRET="my-super-secret-key-at-least-32-bytes-long" \
-  -v budget-data:/var/lib/postgresql/data \
-  -v budget-secrets:/var/lib/budget-secrets \
-  --name budget \
-  budgeting-app
+  -v velum-data:/var/lib/postgresql/data \
+  -v velum-secrets:/var/lib/budget-secrets \
+  --name velum \
+  petergelgor/velum:latest
 ```
 
-## Exporting the image to share
+## Developers: build locally (optional)
 
-After building, you can export the image to a file and send it to friends:
-
-```bash
-docker save budgeting-app -o budgeting-app.tar
-```
-
-They can then load it with `docker load -i budgeting-app.tar` (see above).
-
-## Publishing to a registry (so friends can `docker run ...`)
-
-### Docker Hub
+From the repo root:
 
 ```bash
-docker login
-docker tag budgeting-app <your-dockerhub-username>/budgeting-app:latest
-docker push <your-dockerhub-username>/budgeting-app:latest
-```
-
-### Multi-arch (recommended if friends might be on Intel + Apple Silicon)
-
-```bash
-docker buildx create --name multiarch --use
-docker buildx build \
-  --platform linux/amd64,linux/arm64 \
-  -t <your-dockerhub-username>/budgeting-app:latest \
-  -f all-in-one/Dockerfile \
-  --push \
-  .
+docker build -t velum -f all-in-one/Dockerfile .
 ```

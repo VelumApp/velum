@@ -1,10 +1,104 @@
-# Budgeting App
+# Velum
 
 This repo contains:
 
 - `backend`: Spring Boot API
 - `frontend`: React app
 - `postgres`: local persistent database (Docker volume)
+
+## Quick Start
+
+If you just want to run Velum (no source code, no building), use the published image: `petergelgor/velum:latest`.
+
+### Option 1: `docker run`
+
+```bash
+docker run -d \
+  -p 3000:80 \
+  -v velum-data:/var/lib/postgresql/data \
+  -v velum-secrets:/var/lib/budget-secrets \
+  --name velum \
+  petergelgor/velum:latest
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+### Option 2: `docker compose`
+
+Create a `docker-compose.yml`:
+
+```yaml
+services:
+  velum:
+    image: petergelgor/velum:latest
+    container_name: velum
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    volumes:
+      - velum_data:/var/lib/postgresql/data
+      - velum_secrets:/var/lib/budget-secrets
+
+volumes:
+  velum_data:
+  velum_secrets:
+```
+
+Then:
+
+```bash
+docker compose up -d
+```
+
+## Development: Docker Compose (from source)
+
+1. Copy the env template:
+
+```bash
+cp .env.example .env
+```
+
+2. Optionally update `JWT_SECRET` in `.env`.
+   `ENCRYPTION_SECRET` is now auto-generated on first backend start and persisted in a Docker volume.
+
+3. If you access the app remotely (DDNS/Tailscale), set `APP_CORS_ALLOWED_ORIGINS` in the same root `.env`.
+   Example:
+
+```env
+APP_CORS_ALLOWED_ORIGINS=http://localhost:3000,http://server.domain.net:3000,http://100.104.225.32:3000
+```
+
+4. Start everything:
+
+```bash
+docker compose up --build -d
+```
+
+Open:
+
+- App: [http://localhost:3000](http://localhost:3000)
+- API (via frontend proxy): [http://localhost:3000/api/v1](http://localhost:3000/api/v1)
+
+## Networking Notes
+
+- In Docker Compose, the backend is exposed on `${BACKEND_PORT:-8080}` for convenience, but the browser UI still talks to it via the frontend proxy (`/api/*`).
+- In the all-in-one image, the backend is internal-only and is reached via Nginx proxying to `localhost:8080` inside the container.
+
+## Useful Commands
+
+```bash
+# View container status
+docker compose ps
+
+# Tail logs
+docker compose logs -f
+
+# Stop stack
+docker compose down
+
+# Stop and remove DB data (full reset)
+docker compose down -v
+```
 
 ## Current Product Status (Audited Feb 7, 2026)
 
@@ -123,86 +217,6 @@ Commands above passed. Docker image builds for both `backend` and `frontend` als
 1. Add API contract tests and frontend integration tests for each core page flow.
 2. Add CI gates for `mvn test`, `npm test`, `npm run typecheck`, `npm run build`, `npm run e2e`.
 3. Add seed/demo mode for local product walkthrough without real bank connectivity.
-
-## Quick Start
-
-Choose one:
-
-- **Docker Compose** (3 containers: frontend, backend, postgres)
-- **All-in-one image** (1 container: frontend + backend + postgres)
-
-## Option A: Docker Compose (recommended for development)
-
-1. Copy the env template:
-
-```bash
-cp .env.example .env
-```
-
-2. Optionally update `JWT_SECRET` in `.env`.
-   `ENCRYPTION_SECRET` is now auto-generated on first backend start and persisted in a Docker volume.
-
-3. If you access the app remotely (DDNS/Tailscale), set `APP_CORS_ALLOWED_ORIGINS` in the same root `.env`.
-   Example:
-
-```env
-APP_CORS_ALLOWED_ORIGINS=http://localhost:3000,http://peterubuntuserver.ddns.net:3000,http://100.104.225.32:3000
-```
-
-4. Start everything:
-
-```bash
-docker compose up --build -d
-```
-
-Open:
-
-- App: [http://localhost:3000](http://localhost:3000)
-- API (via frontend proxy): [http://localhost:3000/api/v1](http://localhost:3000/api/v1)
-
-## Option B: Single container (easy sharing via `docker run`)
-
-This mode packages **PostgreSQL + backend + frontend** into one container managed by a supervisor.
-
-### Build the all-in-one image
-
-```bash
-docker build -t budgeting-app -f all-in-one/Dockerfile .
-```
-
-### Run it
-
-```bash
-docker run -d \
-  -p 3000:80 \
-  -v budget-data:/var/lib/postgresql/data \
-  -v budget-secrets:/var/lib/budget-secrets \
-  --name budget \
-  budgeting-app
-```
-
-Open [http://localhost:3000](http://localhost:3000).
-
-## Networking Notes
-
-- In Docker Compose, the backend is exposed on `${BACKEND_PORT:-8080}` for convenience, but the browser UI still talks to it via the frontend proxy (`/api/*`).
-- In the all-in-one image, the backend is internal-only and is reached via Nginx proxying to `localhost:8080` inside the container.
-
-## Useful Commands
-
-```bash
-# View container status
-docker compose ps
-
-# Tail logs
-docker compose logs -f
-
-# Stop stack
-docker compose down
-
-# Stop and remove DB data (full reset)
-docker compose down -v
-```
 
 ## Notes
 
