@@ -1,3 +1,7 @@
+---
+applyTo: '**'
+---
+
 # Workspace AGENTS.md
 
 ## Purpose
@@ -65,6 +69,8 @@ Use this file first if you start in `/Users/petergelgor/Documents/projects/budge
   - Uses backend auth endpoints only.
 - `/dashboard`
   - Uses `/accounts/summary`, `/analytics/cashflow`, `/analytics/spending`, `/categories?flat=true`.
+- `/dashboard/budget-insights/:categoryId`
+  - Uses `/analytics/budget-insights` and paged `/transactions` (category-filtered) for monthly trend + merchant rollup.
 - `/connections`
   - Uses `/connections`, `/connections/simplefin/setup`, `/connections/{id}/sync`, `/connections/{id}` (DELETE), `/accounts/summary`.
 - `/transactions`
@@ -72,7 +78,7 @@ Use this file first if you start in `/Users/petergelgor/Documents/projects/budge
 - `/categories`
   - Uses `/categories` GET/POST/PUT/DELETE and `/categorization-rules` GET/POST/PUT/DELETE and `/categorization-rules/{id}/transactions` (GET) and `/categorization-rules/backfill` (POST, maintenance).
 - `/budgets`
-  - Uses `/budgets` GET/PUT/DELETE, `/categories?flat=true`, `/analytics/spending`, `/transactions`.
+  - Uses `/budgets` GET/PUT/DELETE, `/categories?flat=true`, `/analytics/spending`, `/analytics/budget-insights`, `/transactions`.
 - `/recurring`
   - Uses `/recurring` GET, `/recurring/detect` POST, `/recurring/upcoming` GET, `/recurring/{id}` PATCH/DELETE.
 - `/accounts/:id`
