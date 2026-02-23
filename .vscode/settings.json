@@ -1,6 +1,7 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
     "chat.tools.terminal.autoApprove": {
-        "mvn test": true
+        "mvn test": true,
+        "mvn compile": true
     }
 }
