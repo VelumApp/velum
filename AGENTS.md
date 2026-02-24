@@ -72,7 +72,7 @@ Use this file first if you start in `/Users/petergelgor/Documents/projects/budge
 - `/dashboard/budget-insights/:categoryId`
   - Uses `/analytics/budget-insights` and paged `/transactions` (category-filtered) for monthly trend + merchant rollup.
 - `/connections`
-  - Uses `/connections`, `/connections/simplefin/setup`, `/connections/{id}/sync`, `/connections/{id}` (DELETE), `/accounts/summary`.
+  - Uses `/connections`, `/connections/simplefin/setup`, `/connections/{id}/sync`, `/connections/{id}/sync/full`, `/connections/{id}` (DELETE), `/accounts/summary`.
 - `/transactions`
   - Uses `/transactions` (GET/POST), `/transactions/coverage`, `/transactions/{id}` (PATCH/DELETE), `/accounts`, `/categories?flat=true`, `/categorization-rules` (POST).
 - `/categories`
