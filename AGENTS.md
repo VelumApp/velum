@@ -64,6 +64,12 @@ Use this file first if you start in `/Users/petergelgor/Documents/projects/budge
 6. On page reload, frontend calls `/api/v1/auth/refresh` then `/api/v1/auth/me`.
 7. On expired/invalid refresh token, frontend clears session and redirects to `/login` for protected pages.
 
+## iOS Auth Flow (iCloud vs Self-Hosted)
+- **iCloud**: User selects iCloud at setup → auto-authenticated (no login screen) → default user created/reused → goes directly to main app
+- **Self-hosted**: User enters server URL → login/register screen → authenticated → main app
+- On session restore: iCloud skips refresh-token flow and auto-authenticates; self-hosted uses normal refresh-token → `/auth/me` flow
+- Lock screen: iCloud users get biometric + PIN only (no password option); self-hosted users get all three
+
 ## Frontend Route To Backend API Ownership
 - `/login`, `/register`
   - Uses backend auth endpoints only.
@@ -89,6 +95,8 @@ Use this file first if you start in `/Users/petergelgor/Documents/projects/budge
 ## Current Product Contract Boundaries
 - Backend is source of truth for users, connections, accounts, categories, transactions, transfers, analytics, recurring patterns, and budget targets.
 - All backend endpoint areas are now surfaced in frontend UI.
+- `POST /api/v1/migration/import` accepts a full data snapshot (categories, accounts, transactions, rules, budgets, recurring) and replaces all user data with ID remapping. Used by iOS to push iCloud data to self-hosted backend for omnidirectional sync setup.
+- Sync is omnidirectional: users can start on either backend (iCloud or self-hosted) and later connect the other for continuous sync.
 
 ## Non-Negotiable Invariants
 - Frontend is TS-only in canonical source/test paths.
