@@ -1,82 +1,160 @@
 # Velum Privacy Policy
 
-_Last updated: February 25, 2026_
+**Last updated:** February 2026
 
----
+Velum is designed as a privacy-first budgeting application.  
+This privacy policy explains what data Velum handles, where it is stored, and how it is protected.
 
 ## Overview
 
-Velum is a personal budgeting app. This policy explains what data Velum collects, where it is stored, and how it is used. The short version: Velum does not operate any servers, does not collect analytics, and does not have access to your data.
+Velum:
+
+- Does **not operate developer-controlled servers**
+- Does **not collect analytics or telemetry**
+- Does **not track users across apps or websites**
+- Does **not sell, share, or monetize user data**
+
+Your financial data remains under your control at all times.
 
 ---
 
-## Data We Collect
+## Data Storage
 
-### Financial Data
-Velum stores account information and transaction records that you either import via SimpleFIN or add manually. This data is created by you and belongs entirely to you.
+### Default: iCloud Storage (CloudKit)
 
-### No Analytics or Crash Reporting
-Velum does not include any analytics SDKs, crash reporters, or telemetry of any kind. No usage data, device identifiers, or behavioral data is ever collected.
+By default, Velum stores your data in your personal Apple iCloud account using Apple's CloudKit framework.
 
----
+This means:
 
-## Where Your Data Is Stored
+- Data is stored in your own iCloud container, not on developer servers
+- Apple manages infrastructure security and encryption
+- The Velum developer cannot access your private data
 
-### Default: iCloud
-By default, all of your data is stored in your personal iCloud account using Apple's CloudKit framework. Velum has no access to this data. It is subject to [Apple's iCloud privacy policy](https://www.apple.com/legal/privacy/).
+CloudKit data is protected using Apple’s standard encryption and security systems as part of iCloud.
 
-### Optional: Self-Hosted Server
-If you choose to self-host a Velum server, your data is stored on your own infrastructure. Velum (the project) has no access to data on self-hosted instances. You are responsible for the security and privacy of your own server.
+You can learn more about Apple's data protection here:
 
-When running a self-hosted server, your server will generate standard web server access logs. These logs may include:
-- Request paths and query parameters (e.g. `/api/v1/analytics/spending?startDate=...`)
-- HTTP method, status code, and response size
-- Timestamp of each request
-- Browser user agent string
-- Referrer URL
-- Network-level IP address as seen from the server (typically a private or internal network address, depending on your network configuration)
-
-These logs are stored on your own server and are not sent to Velum or any third party.
+https://support.apple.com/en-us/HT202303
 
 ---
 
-## SimpleFIN
+### Optional: Self-Hosted Backend
 
-If you choose to link financial institutions, Velum uses [SimpleFIN](https://beta-bridge.simplefin.org) to retrieve your transaction data. SimpleFIN acts as a read-only data bridge between your financial institutions and Velum. Your banking credentials are never stored by SimpleFIN or shared with Velum.
+Velum optionally supports connecting to a self-hosted backend.
 
-For full details on how SimpleFIN handles your data, see [SimpleFIN's security page](https://beta-bridge.simplefin.org/info/security).
+If you enable this:
+
+- Your data is stored on infrastructure you control
+- Security depends on your server configuration
+- The Velum developer has no access to this data
+
+You are responsible for maintaining the security of any self-hosted deployment.
+
+#### Self-Hosted Backend Source Code
+
+Velum’s optional self-hosted backend is open source.  
+If you choose to run your own server, you can review or deploy it here:
+
+https://github.com/VelumApp/velum
 
 ---
 
-## Data Sharing
+## Financial Data Access (SimpleFIN Integration)
 
-Velum does not sell, share, or transmit your data to any third party. The only data movement that occurs is:
-- Between your device and your iCloud account (if using iCloud storage).
-- Between your device and your self-hosted server (if you have configured one).
-- Between your device and SimpleFIN's servers (if you have connected financial institutions).
+Velum can optionally connect to financial institutions via **SimpleFIN Bridge**.
+
+When enabled:
+
+- Velum receives read-only transaction data
+- Bank credentials are handled by SimpleFIN, not Velum
+- Velum does not store banking login credentials
+
+SimpleFIN’s privacy policy is available here:
+
+https://beta-bridge.simplefin.org/privacy
+
+---
+
+## Data Collection by Apple (TestFlight & Platform Diagnostics)
+
+If you install Velum through TestFlight or the App Store, Apple may collect:
+
+- Crash logs
+- Device diagnostics
+- Performance data
+
+This data is handled by Apple under their privacy policies and is not accessible to the Velum developer except in aggregated diagnostic form.
+
+---
+
+## Analytics, Tracking, and Advertising
+
+Velum does **not**:
+
+- Include analytics SDKs
+- Use tracking technologies
+- Serve advertisements
+- Profile user behavior
+- Share data with advertisers
+
+---
+
+## Data Security
+
+Velum relies on platform-level security:
+
+- Apple CloudKit encryption for iCloud storage
+- Apple device security protections
+- Optional user-managed server security for self-hosting
+
+While reasonable safeguards are used, no system can guarantee absolute security.
 
 ---
 
 ## Data Deletion
 
-Because Velum does not store your data on any Velum-operated servers, data deletion is handled entirely by you:
-- **iCloud data** can be deleted by removing the app or clearing its iCloud storage from your device settings.
-- **Self-hosted server data** can be deleted by removing your account or wiping your server's database directly.
+You can delete your data at any time:
+
+### iCloud users
+Delete app data through:
+
+- iOS Settings → Apple ID → iCloud → Manage Storage  
+or  
+- By removing app data within Velum (if available)
+
+### Self-hosted users
+Delete data directly from your backend database or server.
 
 ---
 
-## Children's Privacy
+## Children’s Privacy
 
-Velum is not directed at children under the age of 13 and does not knowingly collect data from children.
+Velum is not directed at children under 13 and does not knowingly collect information from children.
 
 ---
 
 ## Changes to This Policy
 
-If this policy is updated, the "Last updated" date at the top of this document will be changed. Significant changes will be noted in the app's release notes.
+This policy may be updated occasionally.
+
+If significant changes occur:
+
+- The updated policy will appear here
+- The "Last updated" date will change
+
+Continued use of Velum indicates acceptance of the updated policy.
 
 ---
 
 ## Contact
 
-If you have questions or concerns about this privacy policy, please email [petergelgor7@gmail.com](mailto:petergelgor7@gmail.com).
+If you have questions about privacy:
+
+**Email:** petergelgor7@gmail.com
+
+---
+
+## Legal Note
+
+This policy is provided for transparency regarding Velum’s data practices.  
+Velum is designed to minimize developer access to user data wherever possible.
